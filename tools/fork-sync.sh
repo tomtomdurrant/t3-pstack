@@ -22,6 +22,9 @@ fail() {
     exit 1
 }
 
+# This runs unattended, so even an unexpected failure must reach a person.
+trap 'fail "unexpected failure at line $LINENO. See ~/.local/state/t3-pstack-sync/sync.log"' ERR
+
 [[ $(git branch --show-current) == main ]] || fail "$PWD is not on main"
 [[ -z $(git status --porcelain) ]] || fail "$PWD has uncommitted changes"
 
